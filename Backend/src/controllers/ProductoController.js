@@ -6,7 +6,7 @@ class ProductoController {
   getAll(req, res, next) {
     try {
       const productos = ProductoService.getAll();
-      return ApiResponse.success(res, HttpStatus.OK, "Productos obtenidos correctamente", productos);
+      return ApiResponse.success(res, HttpStatus.OK, productos);
     } catch (error) {
       next(error);
     }
@@ -16,7 +16,7 @@ class ProductoController {
     try {
       const id = Number(req.params.id);
       const producto = ProductoService.getById(id);
-      return ApiResponse.success(res, HttpStatus.OK, "Producto obtenido correctamente", producto);
+      return ApiResponse.success(res, HttpStatus.OK, producto);
     } catch (error) {
       next(error);
     }
@@ -25,7 +25,7 @@ class ProductoController {
   create(req, res, next) {
     try {
       const producto = ProductoService.create(req.body);
-      return ApiResponse.success(res, HttpStatus.CREATED, "Producto creado correctamente", producto);
+      return ApiResponse.success(res, HttpStatus.CREATED, producto);
     } catch (error) {
       next(error);
     }
@@ -35,7 +35,7 @@ class ProductoController {
     try {
       const id = Number(req.params.id);
       const producto = ProductoService.update(id, req.body);
-      return ApiResponse.success(res, HttpStatus.OK, "Producto actualizado correctamente", producto);
+      return ApiResponse.success(res, HttpStatus.OK, producto);
     } catch (error) {
       next(error);
     }
@@ -45,7 +45,7 @@ class ProductoController {
     try {
       const id = Number(req.params.id);
       ProductoService.delete(id);
-      return ApiResponse.success(res, HttpStatus.OK, "Producto eliminado correctamente");
+      return ApiResponse.success(res, HttpStatus.OK);
     } catch (error) {
       next(error);
     }

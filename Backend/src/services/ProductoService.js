@@ -1,6 +1,6 @@
 import ProductoRepository from "../repositories/ProductoRepository.js";
-import NotFoundException from "../exceptions/NotFoundException.js";
-import ValidationException from "../exceptions/ValidationException.js";
+import { BadRequestError, NotFoundError } from "../exceptions/AppError.js";
+import { Messages } from "../enums/Messages.js";
 
 class ProductoService {
   getAll() {
@@ -10,7 +10,7 @@ class ProductoService {
   getById(id) {
     const producto = ProductoRepository.findById(id);
     if (!producto) {
-      throw new NotFoundException(`Producto con id ${id} no encontrado`);
+      throw new NotFoundError(Messages.PRODUCT_NOT_FOUND);
     }
     return producto;
   }
@@ -24,7 +24,7 @@ class ProductoService {
     this.#validar(data);
     const producto = ProductoRepository.update(id, data);
     if (!producto) {
-      throw new NotFoundException(`Producto con id ${id} no encontrado`);
+      throw new NotFoundError(Messages.PRODUCT_NOT_FOUND);
     }
     return producto;
   }
@@ -32,19 +32,21 @@ class ProductoService {
   delete(id) {
     const eliminado = ProductoRepository.delete(id);
     if (!eliminado) {
-      throw new NotFoundException(`Producto con id ${id} no encontrado`);
+      throw new NotFoundError(Messages.PRODUCT_NOT_FOUND);
     }
   }
 
   #validar({ nombre, precio, stock }) {
-    if (!nombre || typeof nombre !== "string") {
-      throw new ValidationException("El nombre del producto es obligatorio");
-    }
-    if (precio === undefined || precio < 0) {
-      throw new ValidationException("El precio debe ser un número mayor o igual a 0");
-    }
-    if (stock === undefined || stock < 0) {
-      throw new ValidationException("El stock debe ser un número mayor o igual a 0");
+    const esInvalido =
+      !nombre ||
+      typeof nombre !== "string" ||
+      precio === undefined ||
+      precio < 0 ||
+      stock === undefined ||
+      stock < 0;
+
+    if (esInvalido) {
+      throw new BadRequestError(Messages.INVALID_DATA);
     }
   }
 }

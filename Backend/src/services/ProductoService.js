@@ -2,6 +2,8 @@ import ProductoRepository from "../repositories/ProductoRepository.js";
 import { BadRequestError, NotFoundError } from "../exceptions/AppError.js";
 import { Messages } from "../enums/Messages.js";
 
+import { categorias } from '../data/categorias.js';
+
 class ProductoService {
   getAll() {
     return ProductoRepository.findAll();
@@ -36,18 +38,15 @@ class ProductoService {
     }
   }
 
-  #validar({ nombre, precio, stock }) {
-    const esInvalido =
-      !nombre ||
-      typeof nombre !== "string" ||
-      precio === undefined ||
-      precio < 0 ||
-      stock === undefined ||
-      stock < 0;
-
-    if (esInvalido) {
-      throw new BadRequestError(Messages.INVALID_DATA);
-    }
+  #validar(data) {
+    if (!data || typeof data !== 'object') throw new BadRequestError(Messages.INVALID_DATA);
+    const { nombre, descripcion, precio, stock, categoria } = data;
+    const invalido = typeof nombre !== 'string' || !nombre.trim() ||
+      !Number.isFinite(precio) || precio < 0 ||
+      !Number.isSafeInteger(stock) || stock < 0 ||
+      (descripcion !== undefined && typeof descripcion !== 'string') ||
+      (categoria !== undefined && !categorias.includes(categoria));
+    if (invalido) throw new BadRequestError(Messages.INVALID_DATA);
   }
 }
 

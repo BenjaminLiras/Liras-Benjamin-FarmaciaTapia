@@ -1,0 +1,8 @@
+import React from 'react';
+import Foto from '../components/Foto.jsx';
+
+const detalles = [['Atención sin apuro','Nos tomamos el tiempo que haga falta.'],['Recetas y obras sociales','Recibimos las principales coberturas del barrio.'],['Pedidos por teléfono','Te lo preparamos y solo pasás a retirar.'],['Consejo honesto','Si algo no lo necesitás, te lo decimos.']];
+
+export default function Nosotros() {
+  return <><section className="container seccion historia"><p className="eyebrow">Nuestra historia</p><h1>Una farmacia hecha a pulmón, para el barrio.</h1><p className="intro">Farmacia Tapia abrió sus puertas para acompañar a los vecinos de Villa del Parque con lo que necesitan, y con el trato que ya casi no se encuentra. Somos un local chico, sí, pero cada consulta se atiende con tiempo y con criterio.</p><div className="historia-foto"><Foto tipo="farmaceutico" descripcion="Atención personal en el mostrador de la farmacia" /></div></section><section className="fondo-menta"><div className="container seccion dos-columnas trabajo"><div><h2>Cómo trabajamos</h2><p>Preferimos la conversación al mostrador antes que el algoritmo. Escuchamos qué te pasa, revisamos tu receta y te explicamos con calma cada indicación.</p></div><div className="lista-tarjetas">{detalles.map(([titulo, texto]) => <article className="tarjeta" key={titulo}><h3>{titulo}</h3><p>{texto}</p></article>)}</div></div></section><section className="container seccion saludo"><h2>Pasá a saludarnos.</h2><p>Estamos en Francisco N. de Laprida 4255. Te esperamos con la puerta abierta.</p><div className="acciones"><a className="boton" href="/contacto">Ver ubicación</a><a className="boton secundario" href="/productos">Ver productos</a></div></section></>;
+}

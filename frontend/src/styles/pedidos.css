@@ -1,0 +1,65 @@
+.acciones-pedido {
+  margin-block: 22px;
+  gap: 12px 24px;
+}
+
+.seccion-pedidos h2 {
+  font-size: clamp(1.35rem, 4vw, 1.8rem);
+}
+
+.carrito-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.lineas-pedido {
+  list-style: none;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+
+.lineas-pedido li {
+  border-top: 1px solid var(--borde);
+  padding-block: 12px;
+}
+
+.linea-carrito, .controles-cantidad {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.linea-carrito {
+  justify-content: space-between;
+}
+
+.controles-cantidad button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 6px 12px;
+}
+
+.formulario-pedido p {
+  margin-bottom: 12px;
+}
+
+.producto-pie .enlace {
+  color: #387f6e;
+  background: transparent;
+  padding: 4px 8px;
+  min-height: 36px;
+  font-size: 13px;
+}
+
+@media (max-width: 680px) {
+  .carrito-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .producto-pie .enlace {
+    min-height: 44px;
+  }
+}

@@ -1,10 +1,11 @@
-class Pedido {
-  constructor(id, fecha, estado, total) {
+export default class Pedido {
+  constructor(id, cliente, detalles, referencia) {
     this.id = id;
-    this.fecha = fecha;
-    this.estado = estado;
-    this.total = total;
+    this.fecha = new Date().toISOString();
+    this.estado = 'confirmado';
+    this.cliente = cliente;
+    this.detalles = detalles;
+    this.referencia = referencia;
+    this.total = detalles.reduce((centavos, detalle) => centavos + Math.round(detalle.subtotal * 100), 0) / 100;
   }
 }
-
-export default Pedido;

@@ -4,10 +4,12 @@ import Dialogo from '../components/Dialogo.jsx';
 import ProductoForm from '../components/ProductoForm.jsx';
 import TablaProductos from '../components/TablaProductos.jsx';
 import Foto from '../components/Foto.jsx';
+import { guardarCarrito, leerCarrito } from '../utils/pedidos.js';
 import { listarCategorias } from '../services/categorias.js';
 import { crear, editar, eliminar, listar } from '../services/productos.js';
 
 export default function Productos() {
+  const [carrito, setCarrito] = useState(leerCarrito);
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [busqueda, setBusqueda] = useState('');
@@ -37,6 +39,26 @@ export default function Productos() {
   }
 
   useEffect(() => { cargar(); }, []);
+
+  function agregarAlCarrito(producto) {
+    const actual = leerCarrito();
+    const existente = actual.items.find(item => item.productoId === producto.id);
+    const cantidad = (existente?.cantidad ?? 0) + 1;
+    if (cantidad > producto.stock) {
+      informarError(new Error('Ya agregaste todas las unidades disponibles de ' + producto.nombre + '.'));
+      return;
+    }
+    const linea = { productoId: producto.id, nombre: producto.nombre, cantidad };
+    const items = existente
+      ? actual.items.map(item => item.productoId === producto.id ? linea : item)
+      : [...actual.items, linea];
+    try {
+      setCarrito(guardarCarrito(items));
+      setAviso({ tipo: 'exito', mensaje: producto.nombre + ' se agregó al carrito.' });
+    } catch {
+      informarError(new Error('No se pudo guardar el carrito en este navegador.'));
+    }
+  }
 
   function abrir(tipo, producto) {
     setAviso(null);
@@ -94,12 +116,16 @@ export default function Productos() {
     <>
       <section className="fondo-suave"><div className="container seccion hero-productos"><div><p className="eyebrow">Catálogo orientativo</p><h1>Todo lo que tenemos en el mostrador.</h1><p>Este es un listado de referencia de los productos que solemos tener. Si no encontrás algo, llamanos: probablemente lo tengamos o lo conseguimos.</p><a className="boton" href="tel:+541147096085">Consultar disponibilidad</a></div><Foto tipo="mortero" descripcion="Mortero verde claro acompañado por hojas y semillas" /></div></section>
       <section className="container seccion catalogo">
+        <div className="acciones acciones-pedido">
+          <a className="boton secundario" href="/carrito">Ver carrito ({carrito.items.reduce((total, item) => total + item.cantidad, 0)})</a>
+          <a className="boton secundario" href="/mis-pedidos">Mis pedidos</a>
+        </div>
         <div className="filtros"><label className="buscador"><span className="sr-only">Buscar productos</span><input type="search" placeholder="Buscar un producto…" value={busqueda} onChange={e => setBusqueda(e.target.value)} /></label><div className="categorias" role="group" aria-label="Filtrar por categoría">{['Todos', ...categorias].map(nombre => <button key={nombre} className={categoria === nombre ? 'activo' : 'secundario'} aria-pressed={categoria === nombre} onClick={() => setCategoria(nombre)}>{nombre}</button>)}</div></div>
         <div className="gestion"><button className="secundario" aria-pressed={gestion} onClick={() => setGestion(!gestion)}>{gestion ? 'Cerrar gestión' : 'Gestionar productos'}</button>{gestion && <button disabled={estado !== 'listo'} onClick={() => abrir('crear')}>Agregar producto</button>}</div>
         <Aviso aviso={modal ? null : aviso} />
         {estado === 'cargando' && <p role="status">Cargando productos…</p>}
         {estado === 'error' && <button className="secundario" onClick={cargar}>Reintentar</button>}
-        {estado === 'listo' && <><p className="sr-only" role="status">{filtrados.length} productos encontrados</p>{filtrados.length ? <TablaProductos productos={filtrados} abrir={abrir} gestion={gestion} /> : <p className="vacio">{productos.length ? 'No encontramos productos con esos filtros.' : 'Todavía no hay productos cargados. Podés agregarlos desde Gestionar productos.'}</p>}</>}
+        {estado === 'listo' && <><p className="sr-only" role="status">{filtrados.length} productos encontrados</p>{filtrados.length ? <TablaProductos productos={filtrados} abrir={abrir} gestion={gestion} agregarAlCarrito={agregarAlCarrito} /> : <p className="vacio">{productos.length ? 'No encontramos productos con esos filtros.' : 'Todavía no hay productos cargados. Podés agregarlos desde Gestionar productos.'}</p>}</>}
       </section>
 
       {modal && (
@@ -107,11 +133,11 @@ export default function Productos() {
           <Aviso aviso={aviso} />
           {borrando ? (
             <>
-              <p>Â¿QuerÃ©s eliminar <strong>{modal.producto.nombre}</strong> del inventario?</p>
+              <p>¿Querés eliminar <strong>{modal.producto.nombre}</strong> del inventario?</p>
               <div className="acciones">
                 <button className="secundario" onClick={cerrar} disabled={ocupado} autoFocus>Cancelar</button>
                 <button className="peligro" onClick={confirmar} disabled={ocupado}>
-                  {ocupado ? 'Eliminandoâ€¦' : 'Eliminar producto'}
+                  {ocupado ? 'Eliminando…' : 'Eliminar producto'}
                 </button>
               </div>
             </>

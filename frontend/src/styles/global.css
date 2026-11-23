@@ -37,11 +37,11 @@ em { font-style: normal; color: var(--verde); }
 dt { text-transform: uppercase; color: #53665f; font-size: 12px; }
 dd { margin: 0; }
 .foto { border-radius: 24px; background-repeat: no-repeat; width: 100%; }
-.foto-interior { aspect-ratio: 560/385; background-image: url('../assets/inicio.png'); background-size: 228.5714% auto; background-position: 94.3056% 9.851%; }
+.foto-interior { aspect-ratio: 560/335; background-image: url('../assets/inicio.png'); background-size: 228.5714% auto; background-position: 94.3056% 9.6892%; }
 .foto-farmaceutico { aspect-ratio: 1200/900; background-image: url('../assets/nosotros.png'); background-size: 106.6667% auto; background-position: 50% 25.0129%; }
 .foto-mortero { aspect-ratio: 1; background-image: url('../assets/productos.png'); background-size: 333.3333% auto; background-position: 89.9554% 6.584%; }
 .foto-con-etiqueta { position: relative; }
-.etiqueta { position: absolute; bottom: -24px; left: -24px; background: white; border: 1px solid var(--borde); border-radius: 20px; padding: 14px 18px; box-shadow: 0 6px 12px #15342b20; display: flex; gap: 12px; font-size: 14px; line-height: 1.3; }
+.etiqueta { position: absolute; bottom: 12px; left: 12px; background: white; border: 1px solid var(--borde); border-radius: 20px; padding: 14px 18px; box-shadow: 0 6px 12px #15342b20; display: flex; gap: 12px; font-size: 14px; line-height: 1.3; }
 .etiqueta small { font-size: 11px; color: #53665f; }
 .titulo-limitado { max-width: 650px; }
 .tarjetas { display: grid; gap: 24px; margin-top: 48px; }
@@ -114,7 +114,7 @@ input[type='search'] { border-radius: 999px; font-size: 14px; }
 .sr-only,.salto:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .salto:focus { display: block; padding: 12px; }
 @media(max-width:950px) { .cabecera-interior { flex-wrap: wrap; padding-block: 12px; } .cabecera nav { order: 3; width: 100%; justify-content: center; } .container { width: calc(100% - 40px); } .hero-productos { gap: 30px; } .cuatro { grid-template-columns: repeat(2,1fr); } .pie-grid { gap: 30px; } .invitacion-contenido { grid-template-columns: minmax(0, 1fr); } }
-@media(max-width:650px) { .container { width: calc(100% - 32px); } .telefono { font-size: 12px; padding: 10px 12px; } .marca { font-size: 16px; } .marca small { font-size: 7px; letter-spacing: 2px; } .cabecera nav { gap: 24px; font-size: 13px; } .dos-columnas,.hero-productos { grid-template-columns: minmax(0, 1fr); gap: 36px; } .seccion,.hero-inicio { padding-block: 48px; } .hero-inicio h1 { font-size: 46px; } .hero-productos .foto { max-width: 100%; } .tres,.cuatro { grid-template-columns: minmax(0, 1fr); } .tarjetas { margin-top: 30px; } .encabezado { align-items: start; flex-direction: column; } .etiqueta { left: 12px; bottom: -16px; } .invitacion { padding: 28px; margin-bottom: 64px; } .invitacion h2 { font-size: 28px; } .horarios,.pie-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } .pie-grid { padding-block: 40px; } .pie-base { flex-direction: column; } .contacto { min-height: auto; } .contacto iframe { min-height: 380px; } .gestion { justify-content: start; flex-wrap: wrap; } .saludo { padding-bottom: 80px; } }
+@media(max-width:650px) { .container { width: calc(100% - 32px); } .telefono { font-size: 12px; padding: 10px 12px; } .marca { font-size: 16px; } .marca small { font-size: 7px; letter-spacing: 2px; } .cabecera nav { gap: 24px; font-size: 13px; } .dos-columnas,.hero-productos { grid-template-columns: minmax(0, 1fr); gap: 36px; } .seccion,.hero-inicio { padding-block: 48px; } .hero-inicio h1 { font-size: 46px; } .hero-productos .foto { max-width: 100%; } .tres,.cuatro { grid-template-columns: minmax(0, 1fr); } .tarjetas { margin-top: 30px; } .encabezado { align-items: start; flex-direction: column; } .invitacion { padding: 28px; margin-bottom: 64px; } .invitacion h2 { font-size: 28px; } .horarios,.pie-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } .pie-grid { padding-block: 40px; } .pie-base { flex-direction: column; } .contacto { min-height: auto; } .contacto iframe { min-height: 380px; } .gestion { justify-content: start; flex-wrap: wrap; } .saludo { padding-bottom: 80px; } }
 
 /* Cruz geométrica para mantener el centro en todos los dispositivos. */
 .cruz { position: relative; flex-shrink: 0; font-size: 0; }
@@ -197,4 +197,32 @@ input[type='search'] { border-radius: 999px; font-size: 14px; }
   .cabecera nav.menu-abierto { display: flex; flex-direction: column; align-items: stretch; width: 100%; padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--borde); gap: 4px; }
   .cabecera nav a { justify-content: flex-start; padding: 12px; font-size: 15px; border-radius: 8px; }
   .cabecera nav a[aria-current='page'] { background: #e8f6f1; }
+}
+
+@media (min-width: 651px) and (max-height: 850px) {
+  .hero-inicio {
+    gap: clamp(24px, 4vw, 48px);
+    padding-block: clamp(20px, 4.5svh, 40px);
+  }
+
+  .hero-inicio .eyebrow { margin-bottom: 14px; }
+  .hero-inicio h1 {
+    font-size: clamp(32px, min(4.6vw, 8svh), 62px);
+    text-wrap: balance;
+  }
+  .hero-inicio .intro {
+    font-size: clamp(15px, 2.5svh, 17px);
+    margin-block: 16px 20px;
+  }
+  .hero-inicio .boton { padding-block: 11px; }
+  .hero-inicio .datos-hero {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 20px;
+    padding-top: 14px;
+  }
+  .hero-inicio .foto-con-etiqueta {
+    width: min(100%, 92svh);
+    justify-self: end;
+  }
+
 }
